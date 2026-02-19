@@ -64,6 +64,51 @@ def get_neighbors(maze, node):
 
 def bfs(maze, start, goal):
     path = [] #this should contai list of nodes [start, (20,30), (21,30), ...., goal] as a path from start to goal
+
+    fringe=Queue()  # fifo queue
+    closed_set=set()
+
+    fringe.put(start)
+    closed_set.add(start)
+
+    parent_dict={start:None}
+
+
+
+    while not fringe.empty():# no more nodes to expand
+        pop_node=fringe.get()
+        
+      
+        if pop_node==goal:
+            print("path found")
+            while pop_node is not None:
+                path.append(pop_node)
+                pop_node=parent_dict[pop_node]
+
+            return path[::-1]
+        
+        
+        
+       
+
+        neighbors=get_neighbors(maze,pop_node)
+        
+
+        for n in neighbors :
+            if n not in closed_set :
+                fringe.put(n)
+                closed_set.add(n)
+                parent_dict[n]=pop_node
+                
+
+
+
+
+        
+
+        
+
+
     
     
     
@@ -83,6 +128,52 @@ def bfs(maze, start, goal):
 # 1. a list of nodes containng path from START to GOAL, rememebr the first node in this list should be START and the last one should be GOAL
 def dfs(maze, start, goal):
     path = []
+    i=0
+
+    fringe=PriorityQueue()
+    closed_set=set()
+
+    fringe.put((i,start))
+    closed_set.add(start)
+
+    parent_dict={start:None}
+
+
+
+    while not fringe.empty():
+
+        pop_node=fringe.get()
+       
+
+        if pop_node[1]==goal:
+            print("path found")
+            current_node=pop_node[1]
+
+            while current_node is not None:
+                path.append(current_node)
+                current_node=parent_dict[current_node]
+            return path[::-1]
+    
+        
+
+
+        neighbors=get_neighbors(maze,pop_node[1])
+            
+
+        for n in neighbors :
+                if n not in closed_set :
+                    i-=1
+                    fringe.put((i,n))
+                    closed_set.add(n)
+                    parent_dict[n]=pop_node[1]
+    
+
+        
+
+
+        
+
+
     
     
     
@@ -102,6 +193,51 @@ def dfs(maze, start, goal):
 # 1. a list of nodes containng path from START to GOAL, rememebr the first node in this list should be START and the last one should be GOAL
 def ucs(maze, costs, start, goal):
     path = []
+
+    fringe=PriorityQueue()
+ 
+
+
+    fringe.put((0,start))
+
+    cost_dict={start:0}
+
+    parent_dict={start:None}
+
+    while not fringe.empty():
+        current_cost,pop_node=fringe.get()
+
+        if pop_node==goal:
+            current_node=pop_node
+            while current_node is not None:
+                path.append(current_node)
+                current_node=parent_dict[current_node]
+            return path[::-1]
+        
+
+        # Optimization: If we found a cheaper way to this node previously, skip this stale entry
+        if current_cost > cost_dict[pop_node]:
+            continue
+        
+
+ 
+        neighbor=get_neighbors(maze,pop_node)
+
+        for n in neighbor:
+
+            cost_edge=get_edge_cost(costs=costs,node=n,neighbor=pop_node)
+            cost_n=current_cost + cost_edge
+           
+            if n not in cost_dict or cost_n<cost_dict[n] :
+                
+                cost_dict[n]=cost_n
+                fringe.put((cost_n,n))
+                parent_dict[n]=pop_node
+
+
+
+
+
     
     
     
