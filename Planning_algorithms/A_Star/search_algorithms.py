@@ -61,6 +61,8 @@ def get_neighbors(maze, node):
 def manhattan_heuristice(goal, node):
     distance = 0 #update this variable and return the calcuated/updated value
 
+    print(type(goal))
+
     "*** YOUR CODE HERE ***"
 
     return distance
@@ -97,6 +99,8 @@ def euclidean_heuristic(goal, node):
 def a_star(maze, start, goal, costs, heuristic):
     path = [] #this should contai list of nodes [start, (20,30), (21,30), ...., goal] as a path from start to goal
     "*** YOUR CODE HERE ***"
+
+    distance=manhattan_heuristice(start,goal)
   
     
     
