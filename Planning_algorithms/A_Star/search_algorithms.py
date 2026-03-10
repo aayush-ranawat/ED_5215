@@ -61,9 +61,9 @@ def get_neighbors(maze, node):
 def manhattan_heuristice(goal, node):
     distance = 0 #update this variable and return the calcuated/updated value
 
-    print(type(goal))
-
     "*** YOUR CODE HERE ***"
+    distance= abs(goal[0]-node[0]) + abs(goal[1]-node[1])
+    
 
     return distance
 
@@ -78,8 +78,12 @@ def manhattan_heuristice(goal, node):
 # Returns: euclidean distance between the goal and the node passed as arguments
 def euclidean_heuristic(goal, node):
     distance = 0 #update this variable and return the calcuated/updated value
+    
+    
 
     "*** YOUR CODE HERE ***"
+    
+    distance = ((goal[0]-node[0])**2 + (goal[1]-node[1])**2 )**0.5
 
     return distance
 
@@ -99,8 +103,130 @@ def euclidean_heuristic(goal, node):
 def a_star(maze, start, goal, costs, heuristic):
     path = [] #this should contai list of nodes [start, (20,30), (21,30), ...., goal] as a path from start to goal
     "*** YOUR CODE HERE ***"
+    weight=1
+    
+    if heuristic==0:
+        h_cost=manhattan_heuristice
+        
+    elif heuristic==1:
+        h_cost=euclidean_heuristic
+        
+    elif heuristic >=2:
+        h_cost=manhattan_heuristice
+        weight = heuristic
+        
+        
+    fringe=PriorityQueue()
+    
+    g_start=0
+    f_start=g_start+ weight * h_cost(goal,start)
+    
+    fringe.put((f_start,g_start,start))
+    
+    
+    
+    
+    g_closed={start:g_start}
+    parent={start:None}
+    
+    
+    while not fringe.empty():
+        f_curr , g_curr , curr = fringe.get()
+        
+        if curr==goal:
+            while curr is not None:
+                path.append(curr)
+                curr=parent[curr]
+                
+            path=path[::-1]
+            return path
+            
+            
+        if g_curr>g_closed[curr]:
+            continue
+        
+        
+        neighbors=get_neighbors(maze,curr)
+        
+        for n in neighbors:
+            
+            g_n= g_curr + get_edge_cost(costs,curr,n)
+            
+            f_n= g_n + weight * h_cost(goal,n)
+            
+            if n not in g_closed or g_closed[n]>g_n:
 
-    distance=manhattan_heuristice(start,goal)
+                print(f"adding {n} with g_n {g_n} and f_n is {f_n}")
+                
+                fringe.put((f_n,g_n,n))
+                g_closed[n]=g_n
+                parent[n]=curr
+                
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   
     
     

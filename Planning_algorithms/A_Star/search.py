@@ -86,6 +86,9 @@ def main():
             ax.set_xticks(np.arange(0, maze.shape[1], 1))
             ax.set_yticks(np.arange(0, maze.shape[0], 1))
             ax.grid(True, which='both', linestyle='--', linewidth=0.5)
+
+        print(costs)
+
         
         plt.show()
 
